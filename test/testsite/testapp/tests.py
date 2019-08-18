@@ -1,5 +1,6 @@
 import sys
-sys.path.append('/Users/blangera/dev/yodl')
+import os
+sys.path.append(os.path.join('..', '..'))
 from yodl import yodl
 
 from django.test import TestCase
