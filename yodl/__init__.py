@@ -32,10 +32,10 @@ def _to_fields(props, model_store=models):
         ) if name[:2] != '__' and issubclass(field, models.Field)
     }
 
-def _each(iterable, accept, unpack=False):
+def _each(iterable, accept, unpack=False, **kwargs):
     _ = (
-        [accept(item) for item in iterable] if not unpack else
-        [accept(*item) for item in iterable]
+        [accept(item, **kwargs) for item in iterable] if not unpack else
+        [accept(*item, **kwargs) for item in iterable]
     )
 
 _ueach = partial(_each, unpack=True)
