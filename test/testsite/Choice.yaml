@@ -1,0 +1,18 @@
+question:
+  type: ForeignKey
+  args:
+    - @Question
+  on_delete: {models.CASCADE}
+
+question:
+  -> : Question
+  # on_delete: `${models.CASCADE}`
+  # @yodl(src={'models': models})
+
+choice_text:
+  type: CharField
+  max_length: 200
+
+votes:
+  type: IntegerField
+  default: 0

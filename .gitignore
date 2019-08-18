@@ -2,3 +2,5 @@
 *.pyc
 .vscode/
 dist/
+*.egg-info
+*.sqlite3

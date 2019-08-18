@@ -18,10 +18,10 @@ def _extend(*dicts):
         return acc
     return reduce(_fold, dicts, {})
 
-def _to_fields(props, model_store=models, **methods):
+def _to_fields(props, model_store=models):
     """Maps YAML props dictionary into class fields
     """
-    return _extend({
+    return {
         name: field(*(attrs.get('args', ())), **{
             key: value
             for key, value in attrs.items() if key not in ['type', 'args']
@@ -29,8 +29,8 @@ def _to_fields(props, model_store=models, **methods):
         for name, field, attrs in (
             (name, getattr(model_store, attrs['type']), attrs)
             for name, attrs in props.items()
-        ) if name[:2] != '__'
-    }, methods)
+        ) if name[:2] != '__' and issubclass(field, models.Field)
+    }
 
 def _each(iterable, accept, unpack=False):
     _ = (
@@ -40,18 +40,21 @@ def _each(iterable, accept, unpack=False):
 
 _ueach = partial(_each, unpack=True)
 
-def _augment(path, klass):
+def _augment(path, cls):
+    if not issubclass(cls, models.Model):
+        raise ValueError('yodl decorator needs to be applied to a Django model')
+
     with open(path, 'r') as handle:
         fields = _to_fields(yaml.load(handle.read(), Loader=yaml.FullLoader))
 
-    _ueach(fields.items(), klass.add_to_class)
+    _ueach(fields.items(), cls.add_to_class)
 
 def yodl(arg):
     if isinstance(arg, type):
         _augment('{}.yaml'.format(arg.__name__), arg)
         return arg
 
-    def wrap(klass):
-        _augment(arg, klass)
-        return klass
+    def wrap(cls):
+        _augment(arg, cls)
+        return cls
     return wrap
