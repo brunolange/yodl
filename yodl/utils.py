@@ -1,8 +1,8 @@
 """utility module for the yodl package
 """
 
-import yaml
 from functools import reduce, partial
+import yaml
 
 from django.db import models
 
