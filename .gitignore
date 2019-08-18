@@ -1,3 +1,4 @@
 .pyenv/
 *.pyc
 .vscode/
+dist/
