@@ -43,7 +43,7 @@ class Question(models.Model):
 $ python manage.py shell
 >>> from mysite.models import Question
 >>> Question.text
-<django.db.models.fields.CharField>
+<django.db.models.query_utils.DeferredAttribute object at 0x105a0bda0>
 >>> Question.published_on
-<django.db.models.fields.DateTimeField>
+<django.db.models.query_utils.DeferredAttribute object at 0x105a0bd30>
 ```
