@@ -43,7 +43,8 @@ _ueach = partial(_each, unpack=True)
 def _augment(path, klass):
     with open(path, 'r') as handle:
         fields = _to_fields(yaml.load(handle.read(), Loader=yaml.FullLoader))
-    _ueach(fields.items(), lambda name, field: setattr(klass, name, field))
+
+    _ueach(fields.items(), klass.add_to_class)
 
 def yodl(arg):
     if isinstance(arg, type):
