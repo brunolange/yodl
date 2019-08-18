@@ -16,6 +16,18 @@ def _extend(*dicts):
         return acc
     return reduce(_fold, dicts, {})
 
+def _startswith(obj, char):
+    return isinstance(obj, str) and obj and obj[0] == char
+
+def _navigate(acc, curr):
+    return acc[curr] if isinstance(acc, dict) else getattr(acc, curr)
+
+def _parse_reduce(value):
+    return partial(reduce, _navigate, value[1:].split('.'), {'models': models})
+
+def _parse(value):
+    return _parse_reduce(value) if _startswith(value, '$') else value
+
 def _to_fields(props, model_store=models):
     """Maps YAML props dictionary into class fields
     """
@@ -26,7 +38,13 @@ def _to_fields(props, model_store=models):
         })
         for name, field, attrs in (
             (name, getattr(model_store, attrs['type']), attrs)
-            for name, attrs in props.items()
+            for name, attrs in {
+                key: {
+                    k: _parse(v)
+                    for k, v in values.items()
+                }
+                for key, values in props.items()
+            }.items()
         ) if name[:2] != '__' and issubclass(field, models.Field)
     }
 

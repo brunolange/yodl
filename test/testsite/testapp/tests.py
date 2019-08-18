@@ -1,10 +1,12 @@
-import sys
-import os
-sys.path.append(os.path.join('..', '..'))
+# import sys
+# import os
+# sys.path.append(os.path.join('..', '..'))
 from yodl import yodl
 
 from django.test import TestCase
 from django.db import models
+
+from testapp.models import Question, Choice
 
 __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
@@ -17,9 +19,12 @@ class TestYodl(TestCase):
     def test_question_model(self):
         """test sample question model
         """
-        @yodl('Question.yaml')
-        class ModelQuestion(models.Model):
-            pass
+        cls = models.query_utils.DeferredAttribute
+        self.assertTrue(isinstance(Question.text, cls))
+        self.assertTrue(isinstance(Question.published_on, cls))
 
-        self.assertTrue(isinstance(ModelQuestion.text, models.query_utils.DeferredAttribute))
-        self.assertTrue(isinstance(ModelQuestion.published_on, models.query_utils.DeferredAttribute))
+    def test_choice_model(self):
+        """test sample choice model
+        """
+        cls = models.query_utils.DeferredAttribute
+        self.assertTrue(isinstance(Choice.text, cls))
