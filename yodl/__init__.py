@@ -10,4 +10,4 @@ __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
 __license__ = 'MIT'
 
-__all__ = ['yodl']
+__all__ = ['yodl', 'yodlify']
