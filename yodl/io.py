@@ -33,6 +33,8 @@ def deconstruct(instance, schema):
         }
     )
 
+_deid = lambda k: k[:-3] if k[-3:] == '_id' else k
+
 def yodlify(cls, schema=ATTRIBUTES):
     fields = {
         name: attr.field # django 3!
@@ -42,6 +44,6 @@ def yodlify(cls, schema=ATTRIBUTES):
     }
 
     return yaml.dump({
-        name: deconstruct(field, schema)
+        _deid(name): deconstruct(field, schema)
         for name, field in fields.items()
     })
