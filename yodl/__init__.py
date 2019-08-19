@@ -4,6 +4,7 @@ from YAML configuration files
 """
 
 from .decorators import yodl
+from .io import yodlify
 
 __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'

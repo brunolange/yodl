@@ -10,7 +10,7 @@ __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
 __license__ = 'MIT'
 
-def _extend(*dicts):
+def extend(*dicts):
     def _fold(acc, curr):
         acc.update(curr)
         return acc
@@ -23,10 +23,10 @@ def _navigate(acc, curr):
     return acc[curr] if isinstance(acc, dict) else getattr(acc, curr)
 
 def _parse_reduce(value):
-    return partial(reduce, _navigate, value[1:].split('.'), {'models': models})
+    return reduce(_navigate, value.split('.'), {'models': models})
 
 def _parse(value):
-    return _parse_reduce(value) if _startswith(value, '$') else value
+    return _parse_reduce(value[1:]) if _startswith(value, '$') else value
 
 def _to_fields(props, model_store=models):
     """Maps YAML props dictionary into class fields
