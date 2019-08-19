@@ -10,7 +10,7 @@ __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
 __license__ = 'MIT'
 
-def _extend(*dicts):
+def extend(*dicts):
     def _fold(acc, curr):
         acc.update(curr)
         return acc
