@@ -28,23 +28,28 @@ def _parse_reduce(value):
 def _parse(value):
     return _parse_reduce(value[1:]) if _startswith(value, '$') else value
 
+def _map_values(fun, dic):
+    return {k: fun(v) for k, v in dic.items()}
+
+def _filter_keys(predicate, dic):
+    return {k: v for k, v in dic.items() if predicate(k)}
+
+def _not_in(collection):
+    return lambda x: x not in collection
+
 def _to_fields(props, model_store=models):
     """Maps YAML props dictionary into class fields
     """
     return {
-        name: field(*(attrs.get('args', ())), **{
-            key: value
-            for key, value in attrs.items() if key not in ['type', 'args']
-        })
-        for name, field, attrs in (
-            (name, getattr(model_store, attrs['type']), attrs)
-            for name, attrs in {
-                key: {
-                    k: _parse(v)
-                    for k, v in values.items()
-                }
-                for key, values in props.items()
-            }.items()
+        name: field(*args, **kwargs)
+        for name, field, args, kwargs in (
+            (
+                name,
+                getattr(model_store, attrs['type']),
+                attrs.get('args', ()),
+                {k: v for k, v in attrs.items() if k not in {'type', 'args'}}
+            )
+            for name, attrs in _map_values(partial(_map_values, _parse), props).items()
         ) if name[:2] != '__' and issubclass(field, models.Field)
     }
 
