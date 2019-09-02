@@ -1,6 +1,11 @@
-
+"""decorators module
+"""
 
 from . import utils as u
+
+__author__ = 'Bruno Lange'
+__email__ = 'blangeram@gmail.com'
+__license__ = 'MIT'
 
 def yodl(arg):
     if isinstance(arg, type):
