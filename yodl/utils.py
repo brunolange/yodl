@@ -47,7 +47,7 @@ def _to_fields(props, model_store=models):
                 name,
                 getattr(model_store, attrs['type']),
                 attrs.get('args', ()),
-                {k: v for k, v in attrs.items() if k not in {'type', 'args'}}
+                _filter_keys(_not_in({'type', 'args'}), attrs)
             )
             for name, attrs in _map_values(partial(_map_values, _parse), props).items()
         ) if name[:2] != '__' and issubclass(field, models.Field)
