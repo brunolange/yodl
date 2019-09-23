@@ -47,8 +47,7 @@ def yodlify(cls, schema=ATTRIBUTES):
     fields = {
         name: attr.field  # django 3!
         for name, attr in cls.__dict__.items()
-        if isinstance(attr, DeferredAttribute)
-        and name != 'id'
+        if isinstance(attr, DeferredAttribute) and name != 'id'
     }
 
     return yaml.dump({
