@@ -28,6 +28,7 @@ ATTRIBUTES = {
     },
 }
 
+
 def deconstruct(instance, schema):
     kind = type(instance).__name__
     return extend(
@@ -38,11 +39,13 @@ def deconstruct(instance, schema):
         }
     )
 
+
 _deid = lambda k: k[:-3] if k[-3:] == '_id' else k
+
 
 def yodlify(cls, schema=ATTRIBUTES):
     fields = {
-        name: attr.field # django 3!
+        name: attr.field  # django 3!
         for name, attr in cls.__dict__.items()
         if isinstance(attr, DeferredAttribute)
         and name != 'id'

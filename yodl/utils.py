@@ -10,32 +10,41 @@ __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
 __license__ = 'MIT'
 
+
 def extend(*dicts):
     def _fold(acc, curr):
         acc.update(curr)
         return acc
     return reduce(_fold, dicts, {})
 
+
 def _startswith(obj, char):
     return isinstance(obj, str) and obj and obj[0] == char
+
 
 def _navigate(acc, curr):
     return acc[curr] if isinstance(acc, dict) else getattr(acc, curr)
 
+
 def _parse_reduce(value):
     return reduce(_navigate, value.split('.'), {'models': models})
+
 
 def _parse(value):
     return _parse_reduce(value[1:]) if _startswith(value, '$') else value
 
+
 def _map_values(fun, dic):
     return {k: fun(v) for k, v in dic.items()}
+
 
 def _filter_keys(predicate, dic):
     return {k: v for k, v in dic.items() if predicate(k)}
 
+
 def _not_in(collection):
     return lambda x: x not in collection
+
 
 def _to_fields(props, model_store=models):
     """Maps YAML props dictionary into class fields
@@ -53,13 +62,16 @@ def _to_fields(props, model_store=models):
         ) if name[:2] != '__' and issubclass(field, models.Field)
     }
 
+
 def _each(iterable, accept, unpack=False, **kwargs):
     _ = (
         [accept(item, **kwargs) for item in iterable] if not unpack else
         [accept(*item, **kwargs) for item in iterable]
     )
 
+
 _ueach = partial(_each, unpack=True)
+
 
 def augment(path, cls):
     if not issubclass(cls, models.Model):
