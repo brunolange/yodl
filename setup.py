@@ -9,6 +9,7 @@ with open('requirements.txt') as handle:
 setup(
     name='yodl',
     version='0.0.1',
+    packages=['yodl'],
     description='Django models from YAML!',
     author='Bruno Lange',
     author_email='blangeram@gmail.com',
