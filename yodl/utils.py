@@ -3,19 +3,13 @@
 
 from functools import reduce, partial
 import yaml
+from exos import ueach
 
 from django.db import models
 
 __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
 __license__ = 'MIT'
-
-
-def extend(*dicts):
-    def _fold(acc, curr):
-        acc.update(curr)
-        return acc
-    return reduce(_fold, dicts, {})
 
 
 def _startswith(obj, prefix):
@@ -63,16 +57,6 @@ def _to_fields(props, model_store=models):
     }
 
 
-def _each(iterable, accept, unpack=False, **kwargs):
-    _ = (
-        [accept(item, **kwargs) for item in iterable] if not unpack else
-        [accept(*item, **kwargs) for item in iterable]
-    )
-
-
-_ueach = partial(_each, unpack=True)
-
-
 def augment(path, cls):
     if not issubclass(cls, models.Model):
         raise ValueError('yodl decorator needs to be applied to a Django model')
@@ -80,4 +64,4 @@ def augment(path, cls):
     with open(path, 'r') as handle:
         fields = _to_fields(yaml.load(handle.read(), Loader=yaml.FullLoader))
 
-    _ueach(fields.items(), cls.add_to_class)
+    ueach(cls.add_to_class, fields.items())

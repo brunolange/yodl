@@ -5,7 +5,7 @@ import yaml
 
 from django.db.models.query_utils import DeferredAttribute
 
-from .utils import extend
+from exos import extend
 
 __author__ = 'Bruno Lange'
 __email__ = 'blangeram@gmail.com'
