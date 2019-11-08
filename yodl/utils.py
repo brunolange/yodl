@@ -18,8 +18,8 @@ def extend(*dicts):
     return reduce(_fold, dicts, {})
 
 
-def _startswith(obj, char):
-    return isinstance(obj, str) and obj and obj[0] == char
+def _startswith(obj, prefix):
+    return isinstance(obj, str) and obj[:len(prefix)] == prefix
 
 
 def _navigate(acc, curr):
