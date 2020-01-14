@@ -17,6 +17,7 @@ jobs:
       run: |
         python -m venv .pyenv
         source .pyenv/bin/activate
+        which python
     - name: Install dependencies
       run: |
         which python
