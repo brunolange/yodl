@@ -26,5 +26,5 @@ jobs:
         flake8 yodl --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E731
     - name: Test with pytest
       run: |
-        # cd test/testsite
-        # python manage.py test
+        cd test/testsite
+        python manage.py test

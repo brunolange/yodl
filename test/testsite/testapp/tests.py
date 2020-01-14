@@ -3,6 +3,7 @@ from yodl import yodl, yodlify
 
 from django.test import TestCase
 from django.db import models
+from django.utils import timezone
 
 from testapp.models import Question, Choice
 
@@ -14,6 +15,22 @@ __license__ = 'MIT'
 class TestYodl(TestCase):
     """Main tester class
     """
+
+    def setUp(self):
+        self.text = ' '.join([
+            'According to the Standard Model of elementary particles',
+            'which of the following is not a composite object?'
+        ])
+        question = Question.objects.create(
+            text=self.text,
+            published_on=timezone.now()
+        )
+        Choice.objects.bulk_create([
+            Choice(text=t, question=question) for t in [
+                'Muon', 'Pi-meson', 'Neutron', 'Deuteron', 'Alpha particle'
+            ]
+        ])
+
     def test_question_model(self):
         """test sample question model
         """
@@ -21,11 +38,17 @@ class TestYodl(TestCase):
         self.assertTrue(isinstance(Question.text, cls))
         self.assertTrue(isinstance(Question.published_on, cls))
 
+        question = Question.objects.first()
+        self.assertEqual(question.text, self.text)
+
     def test_choice_model(self):
         """test sample choice model
         """
         cls = models.query_utils.DeferredAttribute
         self.assertTrue(isinstance(Choice.text, cls))
+        self.assertEqual(set(c.text for c in Choice.objects.all()), {
+            'Muon', 'Pi-meson', 'Neutron', 'Deuteron', 'Alpha particle'
+        })
 
 
 class TestYodlify(TestCase):
