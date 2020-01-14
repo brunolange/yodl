@@ -17,13 +17,9 @@ jobs:
       run: |
         python -m venv .pyenv
         source .pyenv/bin/activate
-        which python
-        cd $(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
-        pwd
-        echo /home/runner/work/yodl/ > yodl.pth
-        cd -
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install -e .
         pip install flake8
         python -c 'import sys; print(sys.path)' | tr ',' '\n'
         # stop the build if there are Python syntax errors or undefined names
@@ -31,4 +27,6 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 yodl --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E731
         cd test/testsite
+        python manage.py makemigrations
+        python manage.py migrate
         python manage.py test
