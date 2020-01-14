@@ -1,5 +1,8 @@
+import sys
+
 from django.db import models
 
+sys.path.append('../..')
 from yodl import yodl
 
 
