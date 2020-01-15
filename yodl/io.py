@@ -42,9 +42,6 @@ def deconstruct(instance, schema):
     )
 
 
-
-
-
 def yodlify(cls, schema=ATTRIBUTES):
     fields = {
         name: attr.field  # django 3!
