@@ -42,7 +42,7 @@ def deconstruct(instance, schema):
     )
 
 
-_deid = lambda k: k[:-3] if k[-3:] == '_id' else k
+
 
 
 def yodlify(cls, schema=ATTRIBUTES):
@@ -52,6 +52,7 @@ def yodlify(cls, schema=ATTRIBUTES):
         if isinstance(attr, DeferredAttribute) and name != 'id'
     }
 
+    _deid = lambda k: k[:-3] if k[-3:] == '_id' else k
     return yaml.dump({
         _deid(name): deconstruct(field, schema)
         for name, field in fields.items()
