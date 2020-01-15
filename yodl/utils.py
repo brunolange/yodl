@@ -52,14 +52,19 @@ def _to_fields(props, model_store=models):
                 attrs.get('args', ()),
                 _filter_keys(_not_in({'type', 'args'}), attrs)
             )
-            for name, attrs in _map_values(partial(_map_values, _parse), props).items()
+            for name, attrs in _map_values(
+                partial(_map_values, _parse),
+                props
+            ).items()
         ) if name[:2] != '__' and issubclass(field, models.Field)
     }
 
 
 def augment(path, cls):
     if not issubclass(cls, models.Model):
-        raise ValueError('yodl decorator needs to be applied to a Django model')
+        raise ValueError(
+            'yodl decorator needs to be applied to a Django model'
+        )
 
     with open(path, 'r') as handle:
         fields = _to_fields(yaml.load(handle.read(), Loader=yaml.FullLoader))

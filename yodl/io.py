@@ -23,7 +23,9 @@ ATTRIBUTES = {
         'args': lambda f: [f.verbose_name]
     },
     'ForeignKey': {
-        'on_delete': lambda f: '$models.{}'.format(f.remote_field.on_delete.__name__),
+        'on_delete': lambda f: '$models.{}'.format(
+            f.remote_field.on_delete.__name__
+        ),
         'args': lambda f: [f.remote_field.model.__name__]
     },
 }
