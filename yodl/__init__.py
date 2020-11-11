@@ -6,8 +6,8 @@ from YAML configuration files
 from .decorators import yodl
 from .io import yodlify
 
-__author__ = 'Bruno Lange'
-__email__ = 'blangeram@gmail.com'
-__license__ = 'MIT'
+__author__ = "Bruno Lange"
+__email__ = "blangeram@gmail.com"
+__license__ = "MIT"
 
-__all__ = ['yodl', 'yodlify']
+__all__ = ["yodl", "yodlify"]
