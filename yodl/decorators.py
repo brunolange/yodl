@@ -13,7 +13,8 @@ def yodl(arg):
         u.augment('{}.yaml'.format(arg.__name__), arg)
         return arg
 
+    path = arg
     def wrap(cls):
-        u.augment(arg, cls)
+        u.augment(path, cls)
         return cls
     return wrap
